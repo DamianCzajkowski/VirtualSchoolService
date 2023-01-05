@@ -1,0 +1,55 @@
+﻿@model ApplicationUser
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+	<input asp-formaction="Id" hidden />
+		<div class="row">
+			<div class="border p-3 mt-4 row">
+				<div class="col-12 pb-2">
+					<h2 class="text-primary">Create User</h2>
+					<hr />
+				</div>
+				@*<div asp-validation-summary="All"></div>*@
+				<div class="mb-3">
+					<label asp-for="UserName"></label>
+					<input asp-for="UserName" class="form-control" />
+					<span asp-validation-for="UserName" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Email"></label>
+					<input asp-for="Email" class="form-control" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="mb-3 col-6">
+					<label asp-for="FirstName"></label>
+					<input asp-for="FirstName" class="form-control" />
+					<span asp-validation-for="FirstName" class="text-danger"></span>
+				</div>
+				<div class="mb-3 col-6">
+					<label asp-for="LastName"></label>
+					<input asp-for="LastName" class="form-control" />
+					<span asp-validation-for="LastName" class="text-danger"></span>
+				</div>
+			<div class="checkbox">
+				<label asp-for="IsStudent"></label>
+				<input class="form-check-input" asp-for="IsStudent" />
+			</div>
+			<div class="checkbox">
+				<label asp-for="IsTeacher"></label>
+				<input class="form-check-input" asp-for="IsTeacher" />
+			</div>
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+					<a asp-controller="Users" asp-action="Index" class="btn btn-secondary" style="width:150px">
+						Back to List
+					</a>
+
+				</div>
+			</div>
+		</div>
+</form>
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

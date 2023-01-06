@@ -12,6 +12,8 @@ namespace VirtualSchoolServiceApp.Models
         public bool IsStudent { get; set; } = false;
         public Teacher? Teacher { get; set; }
         public bool IsTeacher { get; set; } = false;
+        public Parent? Parent { get; set; }
+        public bool IsParent { get; set; } = false;
 
     }
 

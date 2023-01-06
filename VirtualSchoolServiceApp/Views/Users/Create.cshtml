@@ -29,14 +29,18 @@
 					<input asp-for="LastName" class="form-control" />
 					<span asp-validation-for="LastName" class="text-danger"></span>
 				</div>
-			<div class="checkbox">
-				<label asp-for="IsStudent"></label>
-				<input class="form-check-input" asp-for="IsStudent" />
-			</div>
-			<div class="checkbox">
-				<label asp-for="IsTeacher"></label>
-				<input class="form-check-input" asp-for="IsTeacher" />
-			</div>
+				<div class="checkbox">
+					<label asp-for="IsStudent"></label>
+					<input class="form-check-input" asp-for="IsStudent" />
+				</div>
+				<div class="checkbox">
+					<label asp-for="IsTeacher"></label>
+					<input class="form-check-input" asp-for="IsTeacher" />
+				</div>
+				<div class="checkbox">
+					<label asp-for="IsParent"></label>
+					<input class="form-check-input" asp-for="IsParent" />
+				</div>
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary" style="width:150px">Create</button>
 					<a asp-controller="Users" asp-action="Index" class="btn btn-secondary" style="width:150px">

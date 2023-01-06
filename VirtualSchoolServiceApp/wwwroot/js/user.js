@@ -16,7 +16,7 @@ function loadDataTable() {
             {
                 "data": "id", "render": function (data, type, row) {
                     return `
-                    <span>${row.isStudent ? "Student" : ""}${row.isTeacher ? "Teacher" : ""}</span>                
+                    <span>${row.isStudent ? "Student" : ""}${row.isTeacher ? "Teacher" : ""}${row.isParent ? "Parent" : ""}</span>                
                     `
                 },
                 "width": "15%"

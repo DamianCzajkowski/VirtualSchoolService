@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using VirtualSchoolServiceApp.Data;
 using VirtualSchoolServiceApp.Models;
 
@@ -7,10 +8,12 @@ namespace VirtualSchoolServiceApp.Controllers
     public class SubjectController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public SubjectController(ApplicationDbContext db)
+        public SubjectController(ApplicationDbContext db, IWebHostEnvironment hostEnvironment)
         {
             _db = db;
+            _hostEnvironment = hostEnvironment;
 
         }
         public IActionResult Index()
@@ -28,10 +31,31 @@ namespace VirtualSchoolServiceApp.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Subject obj)
+        public IActionResult Create(Subject obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"files\subjects");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (obj.ContentOfEducation != null)
+                    {
+                        var oldFilePath = Path.Combine(wwwRootPath, obj.ContentOfEducation.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    obj.ContentOfEducation = @"\files\subjects\" + fileName + extension;
+                }
                 _db.Subjects.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Subject created successfully";

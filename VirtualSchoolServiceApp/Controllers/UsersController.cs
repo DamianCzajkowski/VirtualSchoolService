@@ -51,7 +51,15 @@ namespace VirtualSchoolServiceApp.Controllers
                     };
                     _db.Teachers.Add(teacher);
                 }
-                _db.SaveChanges();
+				if (obj.IsParent)
+				{
+					Parent parent = new()
+					{
+						User = obj
+					};
+					_db.Parents.Add(parent);
+				}
+				_db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(obj);

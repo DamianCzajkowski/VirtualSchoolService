@@ -12,6 +12,7 @@ namespace VirtualSchoolServiceApp.Data
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Parent> Parents { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
@@ -27,6 +28,11 @@ namespace VirtualSchoolServiceApp.Data
                 .HasOne(a => a.Teacher)
                 .WithOne(s => s.User)
                 .HasForeignKey<Teacher>(s => s.AppUserId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(a => a.Parent)
+                .WithOne(p => p.User)
+                .HasForeignKey<Parent>(s => s.AppUserId);
 
             modelBuilder.Entity<Teacher>()
                 .HasOne(a => a.Class)

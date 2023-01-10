@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Grade>
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Grades List</h2>
+        </div>
+    </div>
+    <br />
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Subject Name
+                </th>
+                <th>
+                    Mark
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="50%">
+                        @obj.Subject.Name
+                    </td>
+                    <td width="50%">
+                        @obj.Mark
+                    </td>
+                    <td width="50%">
+                        @obj.DateTime
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

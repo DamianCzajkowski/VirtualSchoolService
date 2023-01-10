@@ -7,9 +7,11 @@ using VirtualSchoolServiceApp.Data;
 using VirtualSchoolServiceApp.Models;
 using System.Security.Claims;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VirtualSchoolServiceApp.Controllers
 {
+    [Authorize(Roles="Administrator")]
     public class ClassesController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -131,12 +133,7 @@ namespace VirtualSchoolServiceApp.Controllers
             {
                 return NotFound();
             }
-            var classSubjects = _db.ClassSubjects.Include(cs => cs.Subject).Where(cs => cs.ClassId != id);
-            List<Subject> Subjects = new List<Subject>();
-            foreach (var classSubject in classSubjects)
-            {
-                Subjects.Add(classSubject.Subject);
-            }
+            var Subjects = _db.Subjects.Where(s => s.ClassSubjects.Count() == 0);
             AddSubjectClassVM addSubjectClassVM = new()
             {
                 Class = _db.Classes.Find(id),

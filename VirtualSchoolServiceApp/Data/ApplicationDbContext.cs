@@ -17,6 +17,7 @@ namespace VirtualSchoolServiceApp.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ClassSubjects> ClassSubjects { get; set; }
+        public DbSet<Grade> Grades { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApplicationUser>()

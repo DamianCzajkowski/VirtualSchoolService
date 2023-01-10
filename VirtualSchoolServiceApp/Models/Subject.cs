@@ -11,6 +11,9 @@ namespace VirtualSchoolServiceApp.Models
         public List<ClassSubjects> ClassSubjects { get; set; } = new List<ClassSubjects>();
         [ValidateNever]
         public string ContentOfEducation { get; set; }
+        public List<Grade>? Grades { get; set; } = new List<Grade>();
+        public int? TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
 
     }
 }

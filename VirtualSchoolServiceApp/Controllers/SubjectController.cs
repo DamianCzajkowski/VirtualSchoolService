@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using System.Data;
 using VirtualSchoolServiceApp.Data;
 using VirtualSchoolServiceApp.Models;
 
 namespace VirtualSchoolServiceApp.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class SubjectController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -57,6 +60,12 @@ namespace VirtualSchoolServiceApp.Controllers
                     obj.ContentOfEducation = @"\files\subjects\" + fileName + extension;
                 }
                 _db.Subjects.Add(obj);
+                _db.SaveChanges();
+                ClassSubjects classSubjects = new ClassSubjects()
+                {
+                    SubjectId = obj.Id
+                };
+                _db.ClassSubjects.Add(classSubjects);
                 _db.SaveChanges();
                 TempData["success"] = "Subject created successfully";
                 return RedirectToAction("Index");

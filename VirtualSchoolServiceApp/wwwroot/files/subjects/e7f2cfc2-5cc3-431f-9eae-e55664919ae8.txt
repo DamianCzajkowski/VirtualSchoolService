@@ -1,0 +1,689 @@
+SELECT
+    mar.nazwa,
+    SUM(nvl(s.cena, 0)) "sumaryczna cena"
+FROM
+    samochody s,
+    modele    m,
+    marki     mar
+WHERE
+        m.idmodelu = s.idmodelu
+    AND mar.idmarki = m.idmarki
+    AND s.przebieg BETWEEN 2000 AND 3000
+GROUP BY
+    mar.idmarki,
+    mar.nazwa;	BD_NST_PS1	1638608671065	SQL	1	0.051
+SELECT E.ENAME
+FROM EMP E, IMPLEMP IM, IMPLPROJECT IP;	BD_NST_PS1	1639214495184	SQL	1	0.021
+SELECT ma.nazwa
+FROM modele m
+         FULL OUTER JOIN marki ma USING (idmarki)
+WHERE m.idmodelu IS NULL;	BD_NST_PS1	1643051316054	SQL	1	0.025
+SELECT ename,sal+NVL(comm,0) FROM EMP	BD_NST_PS1	1637092159807	SQL	1	0.01
+SELECT mr.nazwa
+FROM modele m
+         FULL OUTER JOIN marki mr USING (idmarki)
+WHERE m.idmodelu IS NULL;	BD_NST_PS1	1643051281276	SQL	1	0.016
+select * from pracownicy;	BD_NST_PS1	1637398557649	SQL	1	0.01
+SELECT k.nazwisko
+FROM klienci k
+WHERE NOT EXISTS 
+(SELECT NULL FROM umowy u 
+WHERE k.idklienta = u.idklienta);	BD_NST_PS1	1643446865377	SQL	1	0.091
+SELECT * FROM PRZEDMIOT_PB;	BD_NST_PS1	1642238197939	SQL	1	0.01
+SELECT 
+W.IMIE, W.NAZWISKO, M.NAZWA
+FROM
+WLASCICIELE W, MODELE M;	BD_NST_PS1	1637400314772	SQL	1	0.006
+SELECT 
+PLACA P, NAZWA S
+FROM 
+PRACOWNICY P, STANOWISKA S
+WHERE S.NAZWA = 'dyrektor'
+UNION
+SELECT
+PLACA P, NAZWA S
+FROM 
+PRACOWNICY P, STANOWISKA S
+WHERE S.NAZWA = 'doradca';	BD_NST_PS1	1643065378865	SQL	2	0.008
+SELECT E.ENAME
+FROM EMP E, IMPLEMP IM, IMPLPROJECT IP
+WHERE E.EMPNO=IM.EMPNO AND IM.IMPL=IP.IMPL AND TO_CHAR(START_DATE, 'q')=1 AND EXTRACT(YEAR FROM START_DATE)=2008
+AND IP.IMPL IN
+(SELECT IMPL
+FROM IMPLEMP
+GROUP BY IMPL
+HAVING COUNT(1)>=2)
+--4. Dla każdej nazwy departamentu podać jego budżet. W obliczeniach uwzględnić 
+--kwotę na płace i premie pracowników oraz wynagrodzenie z tytułu uczestnictwa w 
+--projekcie. Wynagrodzenie pracownika uczestniczącego w projekcie oblicza się 
+--jako 5% budżetu projektu pomnożone przez liczbę dni realizacji i podzielone prze 
+--liczbę realizujących pracowników. 
+--5. Podać listę pracowników, datę zatrudnienia i wstawioną gwiazdką w wierszu 
+--pracownika najwcześniej zatrudnionego. 
+--6 Używając odwołania do kolumny empno w kolumnie mgr i złączenie zewnętrzne 
+--w połączeniu z funkcją NVL pobrać informacje o pracownikach po lewej stronie 
+--pionowej kreski, a informacje o szefie po prawej. 
+--7. Na podstawie zadania 6 utworzyć podzapytanie 3-poziomowe. 
+--8. Na podstawie zadania 6 utworzyć podzapytanie 4-poziomowe. 
+--9. Używając CONNECT BY PRIOR i START WITH wybrać: 
+ --   a) pracownika o numerze 7902 i jego zwierzchników. 
+ --   b) pracownika o numerze 7839 i jego podwładnych. 
+--10. Korzystając z pseudokolumny LEVEL wskazać poziom węzła w hierarchii, 
+--wybierając: 
+  --  a) pracownika o numerze 7521 i jego zwierzchników. 
+   -- b) pracownika o numerze 7499 i jego podwładnych.	BD_NST_PS1	1639214875378	SQL	1	0.017
+INSERT INTO PRZEDMIOT_PB (ID, NAZWA) VALUES (2, 'SYSTEMY BD');	BD_NST_PS1	1642240058254	SQL	1	0.253
+SELECT 
+ADRES 
+FROM DEALERZY;	BD_NST_PS1	1637396867497	SQL	1	0.035
+SELECT
+    rpad(d.nazwafirmy, 10, ''),
+    s.idsamochodu,
+    add_months(s.data_wstawienia, 7)
+FROM
+    dealerzy  d,
+    samochody s
+WHERE
+    d.iddealera = s.iddealera;	BD_NST_PS1	1638604139762	SQL	7	0.009
+-- Podać nazwiska, imiona i stanowisko pracowników obsługujących umowy z datą 
+--odbioru w miesiącu styczniu 2018 roku z klientami z miasta Berlin.
+
+
+
+
+
+
+
+
+--Podać nazwiska i imiona klientów oraz liczbę umów podpisanych z rabatem powyżej 3%.
+SELECT
+    k.nazwisko,
+    k.imie,
+    o.ilosc,
+    o.rabat,
+    u.umowy
+FROM
+    klienci   k,
+    opisyumow o,
+    umowy u
+;
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+    p.nazwisko,
+    p.imie,
+    s.nazwa
+FROM
+    pracownicy p,
+    stanowiska s,
+    umowy      u,
+    klienci    k
+WHERE
+        s.idstanowiska = p.idstanowiska
+    AND p.idpracownika = u.idpracownika
+    AND k.idklienta = u.idklienta
+    AND lower(k.miasto) = 'berlin' 
+    AND to_char(u.dataodbioru, 'mm') = 1
+    AND to_char(u.dataodbioru, 'YYYY') = 2008;
+    
+-- Podać nazwę marki i sumaryczną cenę samochodów z przebiegiem od 2000 do 3000.
+SELECT
+    mr.nazwa,
+    SUM(nvl(s.cena, 0)) "sumaryczna cena"
+FROM
+    samochody s,
+    modele    m,
+    marki     mr
+WHERE
+        m.idmodelu = s.idmodelu
+    AND mr.idmarki = m.idmarki
+    AND s.przebieg BETWEEN 2000 AND 3000
+GROUP BY
+    mr.idmarki,
+    mr.nazwa;
+    
+
+--Podać nazwiska i imiona właścicieli samochodów modelu Audi ze zmienioną literą 
+--„a” na „e” w nazwisku. Liczbę miesięcy które upłynęły od daty wstawienia do dzisiaj. 
+--Uwzględnić tylko samochody z pojemnością silnika powyżej 2000.
+
+
+
+
+
+
+
+
+
+SELECT
+    translate(w.nazwisko, 'a', 'e'),
+    w.imie,
+    trunc(months_between(sysdate, s.data_wstawienia)) "liczba miesiecy"
+FROM
+    wlasciciele w,
+    samochody   s,
+    modele      m,
+    marki       mr
+WHERE
+        w.idwlasciciela = s.idwlasciciela
+    AND m.idmodelu = s.idmodelu
+    AND mr.idmarki = m.idmarki
+    AND lower(mr.nazwa) = 'audi'
+    AND s.pojsilnika > 10;	BD_NST_PS1	1638309989871	Script	2	0.072
+SELECT
+k.nazwisko,
+k.imie,
+o.ilosc
+FROM
+klienci k,
+opisyumow o
+WHERE (o.rabat) > 0.03;	BD_NST_PS1	1638604764543	SQL	2	0.01
+(SELECT PLACA from PRACOWNICY p join STANOWISKA s
+on s.idstanowiska = p.idstanowiska
+and s.nazwa = 'doradca');	BD_NST_PS1	1643137381924	SQL	2	0.006
+SELECT COUNT (7) FROM PRACOWNICY;	BD_NST_PS1	1638562803344	SQL	1	0.008
+SELECT
+    MIN(sal),
+    MAX(sal),
+    round(AVG(sal), 2),
+    SUM(sal)
+FROM
+    emp;	BD_NST_PS1	1637363409685	SQL	1	0.016
+SELECT P.IDPRACOWNIKA FROM PRACOWNICY P WHERE DATAURODZENIA = (SELECT DATAURODZENIA FROM PRACOWNICY 
+WHERE NAZWISKO = 'Nogat') AND P.NAZWISKO != 'Nogat';	BD_NST_PS1	1643449047488	SQL	1	0.01
+SELECT
+    d.nazwafirmy
+FROM
+         dealerzy d
+    JOIN samochody s USING ( iddealera )
+WHERE
+        ( d.miasto ) = 'Bialystok'
+    AND s.idsamochodu IN (
+        SELECT
+            s1.idsamochodu
+        FROM
+                 dealerzy d1
+            JOIN samochody s1 USING ( iddealera )
+        WHERE
+            ( d1.miasto ) = 'Sokolka'
+    );	BD_NST_PS1	1644654981486	SQL	4	0.01
+SELECT
+    ename,
+    sal AS JD
+    FROM EMP
+WHERE SAL*0.25>3000;	BD_NST_PS1	1637084546619	SQL	1	0.008
+SELECT m.nazwa
+FROM modele m
+JOIN samochody s 
+USING (idmodelu)
+WHERE s.cena>(SELECT AVG(s.cena) FROM samochody);	BD_NST_PS1	1643063907208	SQL	1	0.01
+SELECT ADD_MONTHS(HIREDATE,6) FROM EMP;	BD_NST_PS1	1637396823880	SQL	1	0.088
+SELECT ename,sal,comm FROM EMP	BD_NST_PS1	1637092219965	SQL	1	0.007
+SELECT NAZWISKO
+FROM KLIENCI;	BD_NST_PS1	1642847207593	SQL	1	0.007
+SELECT DISTINCT
+    p.prono,
+    p.proname
+FROM
+    project     p,
+    implproject ip,
+    implproject ip1
+WHERE
+        p.prono = ip.prono
+    AND ip.prono = ip1.prono
+    AND abs(months_between(ip.start_date, ip1.start_date)) < 2
+    AND ip.start_date != ip1.start_date;	BD_NST_PS1	1642763035141	SQL	1	0.008
+SELECT
+    ename,
+    sal
+    FROM EMP
+WHERE SAL*0.25<= 3000;	BD_NST_PS1	1637084233609	SQL	1	0.011
+SELECT empno, ename
+FROM EMP E, DEPT D
+WHERE E.deptno = D.deptno AND INITCAP(loc) = 'DALLAS';	BD_NST_PS1	1637401970513	SQL	1	0.008
+SELECT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'doradca' 
+UNION ALL
+SELECT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'dyrektor';	BD_NST_PS1	1643402368545	SQL	1	0.014
+SELECT
+    ma.nazwa
+FROM
+    marki  ma
+    LEFT JOIN modele mo ON ma.idmarki = mo.idmarki
+WHERE
+    mo.idmodelu IS NULL;	BD_NST_PS1	1644614944110	SQL	3	0.009
+SELECT DISTINCT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'doradca' 
+UNION ALL
+SELECT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'dyrektor';	BD_NST_PS1	1643402444316	SQL	1	0.012
+SELECT
+    ENAME
+FROM
+    emp;	BD_NST_PS1	1637363390275	SQL	1	0.007
+SELECT w.nazwisko
+    FROM wlasciciele w;	BD_NST_PS1	1643448054973	SQL	1	0.011
+SELECT IMIE
+FROM KLIENCI;	BD_NST_PS1	1642847200434	SQL	1	0.01
+SELECT
+    p.nazwisko,
+    p.imie,
+    s.nazwa
+FROM
+    pracownicy p,
+    stanowiska s,
+    umowy      u,
+    klienci    k
+WHERE
+        s.idstanowiska = p.idstanowiska
+    AND p.idpracownika = u.idpracownika
+    AND k.idklienta = u.idklienta
+    AND EXTRACT(YEAR FROM u.datapodpisania) = 2008
+    AND EXTRACT(MONTH FROM u.datapodpisania) = 6
+    AND instr(k.nazwisko, 'M') = 1
+    AND instr(k.imie, 'A') = 1;	BD_NST_PS1	1638610090001	SQL	5	0.007
+SELECT mr.nazwa
+FROM modele mo
+         FULL OUTER JOIN marki mr USING (idmarki)
+WHERE mo.idmodelu IS NULL;	BD_NST_PS1	1643402808071	SQL	1	0.009
+SELECT
+    translate(w.nazwisko, 'a', 'e'),
+    w.imie,
+    trunc(months_between(sysdate, s.data_wstawienia)) "liczba miesiecy"
+FROM
+    wlasciciele w,
+    samochody   s,
+    modele      m,
+    marki       mr
+WHERE
+        w.idwlasciciela = s.idwlasciciela
+    AND m.idmodelu = s.idmodelu
+    AND mr.idmarki = m.idmarki
+    AND lower(mr.nazwa) = 'audi'
+    AND s.pojsilnika > 10;	BD_NST_PS1	1638218261118	SQL	2	0.01
+SELECT
+    ename AS Nazwisko,
+    dname "Nazwa departamentu"
+FROM
+    emp  e,
+    dept d
+WHERE
+        d.deptno = e.deptno
+    AND lower(d.loc) = 'chicago';	BD_NST_PS1	1637360855322	SQL	1	0.012
+SELECT
+    ename,
+    sal AS JD
+    FROM EMP
+WHERE (SAL)>='3000';	BD_NST_PS1	1637084380734	SQL	1	0.008
+SELECT p.nazwisko, p.kraj
+    FROM pracownicy p
+    WHERE kraj = 'Polska';	BD_NST_PS1	1643448713780	SQL	1	0.01
+SELECT DISTINCT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA IN ('doradca', 'dyrektor');	BD_NST_PS1	1644344304090	SQL	4	0.056
+SELECT 
+P.IMIE, P.NAZWISKO, S.NAZWA, U.DATAPODPISANIA, D.KRAJ
+FROM
+PRACOWNICY P, STANOWISKA S, UMOWY U, DEALERZY D
+WHERE D.KRAJ='NIEMCY';	BD_NST_PS1	1637399704128	SQL	1	0.011
+SELECT
+    grade,
+    losal,
+    hisal
+FROM
+    salgrade	BD_NST_PS1	1637363298282	SQL	2	0.008
+SELECT
+    p.nazwisko,
+    p.imie,
+    s.nazwa
+FROM
+    pracownicy p,
+    stanowiska s,
+    umowy      u,
+    klienci    k
+WHERE
+        s.idstanowiska = p.idstanowiska
+    AND p.idpracownika = u.idpracownika
+    AND k.idklienta = u.idklienta
+    AND lower(k.miasto) = 'berlin'
+    AND to_char(u.dataodbioru, 'MM') = 0
+    AND to_char(u.dataodbioru, 'YYYY') = 2008;	BD_NST_PS1	1637615584347	SQL	1	0.024
+SELECT k.nazwisko, k.imie
+FROM klienci k;	BD_NST_PS1	1643447020052	SQL	1	0.007
+SELECT
+    grade,
+    losal,
+    hisal
+FROM
+    salgrade;	BD_NST_PS1	1637363302754	SQL	1	0.005
+SELECT ENAME, SAL, SAL*1.25
+FROM EMP
+WHERE SAL*1.25>3000;	BD_NST_PS1	1637089824481	SQL	1	0.008
+SELECT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'doradca' 
+UNION ALL
+SELECT
+    S.NAZWA,
+    P.PLACA
+FROM
+    STANOWISKA S
+JOIN
+    PRACOWNICY P ON S.IDSTANOWISKA = P.IDSTANOWISKA
+WHERE
+    S.NAZWA = 'syrektor';	BD_NST_PS1	1643370668674	SQL	1	0.026
+SELECT
+    ename,
+    sal AS JD
+    FROM EMP
+WHERE (SAL+10000)>='3000';	BD_NST_PS1	1637084450199	SQL	1	0.008
+SELECT 
+M.NAZWA,
+S.PRZEBIEG
+FROM
+MODELE M, SAMOCHODY S
+WHERE S.PRZEBIEG BETWEEN 2000 AND 3000;	BD_NST_PS1	1637400190308	SQL	1	0.007
+SELECT m.nazwa
+FROM modele m
+JOIN samochody s 
+USING (idmodelu)
+WHERE s.cena<(SELECT AVG(cena) FROM samochody);	BD_NST_PS1	1643064101337	SQL	1	0.008
+SELECT
+    empno,
+    ename
+FROM
+    emp
+WHERE
+    deptno IN (
+        SELECT
+            deptno
+        FROM
+            dept
+        WHERE
+            lower(loc) = 'dallas'
+    );	BD_NST_PS1	1642535190870	SQL	1	0.101
+select
+p.idpracownika
+, p.imie
+, p.nazwisko
+from pracownicy p
+join (select idpracownika, kraj, dataurodzenia from pracownicy where nazwisko = 'Nogat') n
+on n.dataurodzenia = p.dataurodzenia
+and n.kraj = p.kraj
+and n.idpracownika != p.idpracownika	BD_NST_PS1	1644612291254	SQL	1	0.017
+select
+p.idpracownika
+, p.imie
+, p.nazwisko
+from pracownicy p
+join (select idpracownika, kraj, dataurodzenia from pracownicy where nazwisko = 'Nogat') n
+on n.dataurodzenia = p.dataurodzenia
+and n.kraj = p.kraj
+and n.idpracownika != p.idpracownika;	BD_NST_PS1	1644612299731	SQL	2	0.022
+SELECT
+NAZWA S, PLACA P
+FROM STANOWISKA S, PRACOWNICY P
+WHERE lower(S.NAZWA)='DORADCA'
+ORDER BY 2;	BD_NST_PS1	1642976040086	SQL	1	0.008
+SELECT
+    p.idpracownika,
+    p.imie,
+    p.nazwisko
+FROM
+         pracownicy p
+    JOIN (
+        SELECT
+            idpracownika,
+            kraj,
+            dataurodzenia
+        FROM
+            pracownicy
+        WHERE
+            nazwisko = 'Nogat'
+    )n  ON n.dataurodzenia = p.dataurodzenia
+           AND n.kraj = p.kraj
+           AND n.idpracownika != p.idpracownika;	BD_NST_PS1	1644512070488	SQL	1	0.009
+SELECT m.nazwa as "Nazwa modelu"
+FROM modele m
+JOIN samochody s 
+USING (idmodelu)
+WHERE s.cena<(SELECT AVG(cena) FROM samochody)
+AND m.nazwa= 'Benz';	BD_NST_PS1	1643064476089	SQL	1	0.009
+SELECT k.nazwisko, k.imie, k.miasto
+FROM klienci k
+WHERE k.miasto=('warszawa');	BD_NST_PS1	1643061045519	SQL	2	0.006
+SELECT
+    p.imie,
+    p.nazwisko,
+    p.idpracownika,
+    p.dataurodzenia
+FROM
+    pracownicy p
+WHERE
+        dataurodzenia = (
+            SELECT
+                dataurodzenia
+            FROM
+                pracownicy
+            WHERE
+                nazwisko = 'Nogat'
+        )
+
+    AND p.kraj = 'Polska';	BD_NST_PS1	1644438730743	SQL	1	0.009
+SELECT k.nazwisko, k.imie, k.miasto
+FROM klienci k
+WHERE k.miasto=('Lapy');	BD_NST_PS1	1643149277944	SQL	2	0.013
+SELECT p.nazwisko, P.IDPRACOWNIKA FROM PRACOWNICY P WHERE DATAURODZENIA = (SELECT DATAURODZENIA FROM PRACOWNICY
+WHERE NAZWISKO = 'Nogat') AND P.NAZWISKO != 'Nogat' AND P.KRAJ = 'Polska';	BD_NST_PS1	1644345008277	SQL	1	0.013
+SELECT p.nazwisko, p.imie, s.nazwa
+FROM pracownicy p, stanowiska s;	BD_NST_PS1	1643447364812	SQL	2	0.013
+SELECT
+NAZWA S, PLACA P
+FROM STANOWISKA S, PRACOWNICY P;	BD_NST_PS1	1642976255444	SQL	3	0.009
+with szczegoly as (select
+s.idmodelu
+, min(s.cena) min_cena
+, avg(s.cena) avg_cena
+from samochody s
+group by
+s.idmodelu
+)
+select distinct mo.nazwa
+from szczegoly sz join modele mo
+on sz.idmodelu = mo.idmodelu
+where sz.min_cena < (select avg_cena from szczegoly join modele on szczegoly.idmodelu = modele.idmodelu where nazwa = 'Audi 3');	BD_NST_PS1	1643149561370	SQL	2	0.022
+SELECT w.nazwisko 
+    FROM wlasciciele w;	BD_NST_PS1	1644653841393	SQL	1	0.014
+with sprzedane_sztuki as
+(select
+k.imie
+, k.nazwisko
+, k.miasto
+, sum(o.ilosc) ilosc_aut -- po polsku powinno być liczba, a nie ilość, i pytanie czy w ogóle to pole ma sens, bo przecież nie można sprzedać np. połowy samochodu albo kilku samochodów o jednakowym vinie
+from klienci k
+join umowy u on k.idklienta = u.idklienta
+join opisyumow o on u.idumowy = o.idumowy
+group by
+k.imie
+, k.nazwisko
+, k.miasto
+)
+select
+imie
+, nazwisko
+from sprzedane_sztuki
+where ilosc_aut < (select sum(case when miasto = 'Zambrow' then ilosc_aut else 0 end) from sprzedane_sztuki);	BD_NST_PS1	1643149444055	SQL	1	0.076
+SELECT
+NAZWA S, PLACA P
+FROM STANOWISKA S, PRACOWNICY P
+WHERE lower(S.NAZWA)='DORADCA';	BD_NST_PS1	1642976067008	SQL	3	0.007
+SELECT d.nazwafirmy
+FROM dealerzy d
+         JOIN samochody s USING (iddealera)
+WHERE (d.miasto) = 'Bialystok'
+  AND s.idsamochodu IN (SELECT s1.idsamochodu
+                        FROM dealerzy d1
+                                 JOIN samochody s1 USING (iddealera)
+                        WHERE (d1.miasto) = 'Sokolka');	BD_NST_PS1	1644654801305	SQL	2	0.02
+SELECT w.nazwisko
+FROM wlasciciele w
+         FULL OUTER JOIN samochody s USING (idwlasciciela)
+WHERE s.idsamochodu IS NULL;	BD_NST_PS1	1644654475007	SQL	2	0.016
+SELECT k.nazwisko, k.imie, ou.ilosc
+FROM klienci k, opisyumow ou;	BD_NST_PS1	1643447173598	SQL	1	0.018
+SELECT 
+PLACA P, NAZWA S
+FROM 
+PRACOWNICY P, STANOWISKA S
+where s.nazwa = 'dyrektor';	BD_NST_PS1	1643136756886	SQL	1	0.01
+SELECT NAZWISKO K, IMIE K
+FROM KLIENCI K;	BD_NST_PS1	1643050397020	SQL	1	0.014
+SELECT
+    placa
+FROM
+    (
+        ( SELECT
+            placa
+        FROM
+                 pracownicy p
+            JOIN stanowiska s ON s.idstanowiska = p.idstanowiska
+                                 AND s.nazwa = 'dyrektor'
+        )
+        INTERSECT
+        ( SELECT
+            placa
+        FROM
+                 pracownicy p
+            JOIN stanowiska s ON s.idstanowiska = p.idstanowiska
+                                 AND s.nazwa = 'doradca'
+        )
+    );	BD_NST_PS1	1644344251372	SQL	1	0.045
+SELECT NAZWISKO 
+FROM KLIENCI;	BD_NST_PS1	1643446916779	SQL	1	0.044
+with sprzedane_sztuki as
+(select
+k.imie
+, k.nazwisko
+, k.miasto
+, sum(o.ilosc) ilosc_aut -- po polsku powinno być liczba, a nie ilość, i pytanie czy w ogóle to pole ma sens, bo przecież nie można sprzedać np. połowy samochodu albo kilku samochodów o jednakowym vinie
+from klienci k
+join umowy u on k.idklienta = u.idklienta
+join opisyumow o on u.idumowy = o.idumowy
+group by
+k.imie
+, k.nazwisko
+, k.miasto
+)
+select
+imie
+, nazwisko
+from sprzedane_sztuki
+where ilosc_aut < (select sum(case when miasto = 'Lapy' then ilosc_aut else 0 end) from sprzedane_sztuki);	BD_NST_PS1	1643149296944	SQL	2	0.016
+SELECT
+    w.nazwisko
+FROM
+    wlasciciele w
+WHERE
+    NOT EXISTS (
+        SELECT
+            NULL
+        FROM
+            samochody s
+        WHERE
+            s.idwlasciciela = w.idwlasciciela
+    );	BD_NST_PS1	1644654437474	SQL	2	0.01
+SELECT p.nazwisko, p.imie, s.nazwa, ou.ilosc
+FROM pracownicy p, stanowiska s, opisyumow ou;	BD_NST_PS1	1643447423566	SQL	1	0.015
+SELECT
+NAZWA 
+FROM STANOWISKA 
+WHERE nazwa ='DORADCA';	BD_NST_PS1	1642976671794	SQL	2	0.006
+with sprzedane_sztuki as
+(select
+k.imie
+, k.nazwisko
+, k.miasto
+, sum(o.ilosc) ilosc_aut -- po polsku powinno być liczba, a nie ilość, i pytanie czy w ogóle to pole ma sens, bo przecież nie można sprzedać np. połowy samochodu albo kilku samochodów o jednakowym vinie
+from klienci k
+join umowy u on k.idklienta = u.idklienta
+join opisyumow o on u.idumowy = o.idumowy
+group by
+k.imie
+, k.nazwisko
+, k.miasto
+)
+select
+imie
+, nazwisko
+from sprzedane_sztuki
+where ilosc_aut < (select sum(case when miasto = 'Warszawa' then ilosc_aut else 0 end) from sprzedane_sztuki);	BD_NST_PS1	1643149402257	SQL	3	0.018
+SELECT ename, job
+FROM EMP
+WHERE sal=2400 AND job='CLERK';	BD_NST_PS1	1642976669469	SQL	2	0.005
+SELECT p.nazwisko 
+    FROM pracownicy p
+    WHERE kraj = 'Polska';	BD_NST_PS1	1643448700797	SQL	1	0.011
+SELECT idsamochodu, data_wstawienia || '  '
+FROM samochody
+WHERE data_wstawienia != (SELECT MIN(data_wstawienia) FROM samochody)
+UNION
+SELECT idsamochodu, data_wstawienia || ' !'
+FROM samochody
+WHERE data_wstawienia = (SELECT MIN(data_wstawienia) FROM samochody)
+ORDER BY 2;	BD_NST_PS1	1644614739072	SQL	3	0.01
+SELECT m.nazwa
+FROM modele m
+JOIN samochody s 
+USING (idmodelu)
+WHERE s.cena>(SELECT AVG(cena) FROM samochody);	BD_NST_PS1	1643064000231	SQL	4	0.007

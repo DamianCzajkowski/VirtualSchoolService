@@ -17,6 +17,23 @@ namespace VirtualSchoolServiceApp.Data
         {
             var password = "Qwerty12#@.";
 
+            // Student
+            await CreateAccount(
+                userManager,
+                new ApplicationUser
+                {
+                    UserName = "student",
+                    Email = "student@mail.com",
+                    FirstName = "Student",
+                    LastName = "Student",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    IsStudent = true
+                },
+                password,
+                "Student"
+            );
+
             // Administrator
             await CreateAccount(
                 userManager,
@@ -33,21 +50,16 @@ namespace VirtualSchoolServiceApp.Data
                 "Administrator"
             );
 
-            // Administrator
-            await CreateAccount(
-                userManager,
-                new ApplicationUser
-                {
-                    UserName = "student",
-                    Email = "student@mail.com",
-                    FirstName = "Student",
-                    LastName = "Student",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true
-                },
-                password,
-                "Student"
-            );
+
+
+            //Grade userGrade = new Grade()
+            //{
+            //    Mark = 1,
+            //    StudentId = 4,
+            //    SubjectId = 1
+            //};
+            //context.Add(userGrade);
+            //await context.SaveChangesAsync();
 
         }
 

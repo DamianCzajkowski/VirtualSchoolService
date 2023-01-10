@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System.Data;
 using VirtualSchoolServiceApp.Data;
 using VirtualSchoolServiceApp.Models;
 
 namespace VirtualSchoolServiceApp.Controllers
 {
-	public class UsersController : Controller
+    [Authorize(Roles = "Administrator")]
+    public class UsersController : Controller
 	{
 		private readonly ApplicationDbContext _db;
 

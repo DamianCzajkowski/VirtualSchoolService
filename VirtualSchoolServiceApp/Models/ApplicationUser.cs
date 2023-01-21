@@ -15,6 +15,8 @@ namespace VirtualSchoolServiceApp.Models
         public Parent? Parent { get; set; }
         public bool IsParent { get; set; } = false;
 
+        public List<MessageThread> MessageThreads { get; set; } = new List<MessageThread>();
+
     }
 
     public class ApplicationUserVM

@@ -11,6 +11,7 @@ namespace VirtualSchoolServiceApp.Models
         public string AppUserId { get; set; }
         [ForeignKey("AppUserId")]
         public ApplicationUser User { get; set; }
-        public List<Student>? Kids { get; set; } = new List<Student>();
+        public List<Student> Kids { get; set; } = new List<Student>();
+        public List<Message> Messages { get; set; } = new List<Message>();
     }
 }

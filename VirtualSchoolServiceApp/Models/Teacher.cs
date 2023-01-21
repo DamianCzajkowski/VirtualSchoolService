@@ -13,6 +13,7 @@ namespace VirtualSchoolServiceApp.Models
         public ApplicationUser User { get; set; }
         public Class? Class { get; set; }
         public List<Subject> Subjects { get; set; } = new List<Subject>();
+        public List<Message> Messages { get; set; } = new List<Message>();
 
     }
 }

@@ -1,21 +1,49 @@
 ﻿@model Subject
 
-<form method="post" asp-action="Edit">
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
     <input asp-asp-for="Id" hidden />
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Edit Subject</h2>
             <hr />
         </div>
+        @if (this.User.IsInRole("Administrator"))
+        {
+            <div class="mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3 col-6">
+                <label asp-for="Teacher"></label>
+            <select asp-for="TeacherId" asp-items="ViewBag.Teachers" class="form-select">
+                <option disabled selected>--Select Supervisor--</option>
+            </select>
+            <span asp-validation-for="TeacherId" class="text-danger"></span>
+            </div>
+        }
+        @if (this.User.IsInRole("Teacher"))
+        {
+            <div class="mb-3">
+        <label asp-for="Name"></label>
+                <input asp-for="Name" readonly class="form-control" />
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Teacher"></label>
+                <select asp-for="TeacherId" readonly asp-items="ViewBag.Teachers" class="form-select">
+                </select>
+                </div>
+            
+        }
         <div class="mb-3">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" disabled class="form-control" />
+            <a href="@Model.ContentOfEducation">Content of Education</a>
+            <input type="file" id="uploadBox" name="file" class="form-control" />
         </div>
         <button type="submit" class="btn btn-danger" style="width:150px">Edit</button>
         <a asp-controller="Subject" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back to List
         </a>
-        <a href="@Model.ContentOfEducation" >Content of Education</a>
+        
     </div>
 </form>
 

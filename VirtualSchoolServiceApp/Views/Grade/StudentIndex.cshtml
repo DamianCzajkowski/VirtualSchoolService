@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Grade>
+﻿@model IEnumerable<GradeVM>
 @{
     ViewData["Title"] = "Grades";
 }
@@ -17,13 +17,7 @@
                     Subject Name
                 </th>
                 <th>
-                    Mark
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-
+                    Marks
                 </th>
             </tr>
         </thead>
@@ -35,10 +29,10 @@
                         @obj.Subject.Name
                     </td>
                     <td width="50%">
-                        @obj.Mark
-                    </td>
-                    <td width="50%">
-                        @obj.DateTime
+                        @foreach (var grade in obj.Grades)
+                        {
+                            <span>@grade.Mark, </span>
+                        }
                     </td>
                 </tr>
             }

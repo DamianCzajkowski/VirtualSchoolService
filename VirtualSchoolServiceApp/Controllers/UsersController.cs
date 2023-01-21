@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace VirtualSchoolServiceApp.Controllers
     public class UsersController : Controller
 	{
 		private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-		public UsersController(ApplicationDbContext db)
+		public UsersController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
 		{
 			_db = db;
+            _userManager = userManager;
 
 		}
 		public IActionResult Index()
@@ -33,11 +36,12 @@ namespace VirtualSchoolServiceApp.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ApplicationUser obj)
+        public async Task<IActionResult> Create(ApplicationUser obj)
         {
             if (ModelState.IsValid)
             {
-				_db.ApplicationUsers.Add(obj);
+				//_db.ApplicationUsers.Add(obj);
+                var role = "Administrator";
                 if (obj.IsStudent)
                 {
                     Student student = new()
@@ -45,6 +49,7 @@ namespace VirtualSchoolServiceApp.Controllers
                         User = obj
                     };
                     _db.Students.Add(student);
+                    role = "Student";
 				}
                 if (obj.IsTeacher)
                 {
@@ -53,6 +58,7 @@ namespace VirtualSchoolServiceApp.Controllers
                         User = obj
                     };
                     _db.Teachers.Add(teacher);
+                    role = "Teacher";
                 }
 				if (obj.IsParent)
 				{
@@ -61,8 +67,21 @@ namespace VirtualSchoolServiceApp.Controllers
 						User = obj
 					};
 					_db.Parents.Add(parent);
+                    role = "Parent";
 				}
+
+                var existingUser = await _userManager.FindByEmailAsync(obj.Email);
+
+                if (existingUser == null)
+                {
+                    await _userManager.CreateAsync(obj, "Qwerty12#@.");
+                    if (!string.IsNullOrWhiteSpace(role))
+                    {
+                        await _userManager.AddToRoleAsync(obj, role);
+                    }
+                }
 				_db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(obj);

@@ -11,6 +11,13 @@
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Teacher"></label>
+            <select asp-for="TeacherId" asp-items="ViewBag.Teachers" class="form-select">
+                <option disabled selected>--Select Supervisor--</option>
+            </select>
+            <span asp-validation-for="TeacherId" class="text-danger"></span>
+        </div>
         <div class="mb-3">
             <label asp-for="ContentOfEducation"></label>
             <input type="file" id="uploadBox" name="file" class="form-control" />

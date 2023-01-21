@@ -1,4 +1,5 @@
 ﻿var dataTable;
+var dataTable2;
 
 $(document).ready(function () {
     loadDataTable();
@@ -14,14 +15,14 @@ function loadDataTable() {
             "url": `/Classes/GetAllStudents?id=${id}`
         },
         "columns": [
-            { "data": "firstName", "width": "15%" },
-            { "data": "lastName", "width": "15%" },
-            { "data": "email", "width": "15%" },
+            { "data": "firstName", "width": "25%" },
+            { "data": "lastName", "width": "25%" },
+            { "data": "email", "width": "35%" },
             {
                 "data": "id", "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
-                            <a onClick=Delete('/Classes/DeleteStudent?classId=${id}&userId=${data}') class="btn btn-danger mx-2"><i class="bi bi-trash"></i> Delete</a>
+                            <a onClick=Delete('/Classes/DeleteStudent?classId=${id}&userId=${data}') class="btn btn-danger mx-2"><i class="bi bi-trash"></i> Remove</a>
                         </div>
                     `
                 },
@@ -35,14 +36,14 @@ function loadDataTableSubjects() {
 
     const url = window.location.pathname;
     const id = url.substring(url.lastIndexOf('/') + 1);
-    dataTable = $('#tblDataSubjects').DataTable({
+    dataTable2 = $('#tblDataSubjects').DataTable({
         "ajax": {
             "url": `/Classes/GetAllSubjects?id=${id}`
         },
         "columns": [
-            { "data": "subject.name", "width": "15%" },
+            { "data": "subject.name", "width": "85%" },
             {
-                "data": "id", "render": function (data) {
+                "data": "subject.id", "render": function (data) {
                     return `
                         <div class="w-75 btn-group" role="group">
                             <a onClick=Delete('/Classes/RemoveSubject?classId=${id}&subjectId=${data}') class="btn btn-danger mx-2"><i class="bi bi-trash"></i> Remove</a>
@@ -63,7 +64,7 @@ function Delete(url) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, remove it!'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -72,6 +73,7 @@ function Delete(url) {
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
+                        dataTable2.ajax.reload();
                         toastr.success(data.message);
                     }
                     else {

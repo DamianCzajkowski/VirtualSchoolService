@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using System.Text.Json.Serialization;
 using VirtualSchoolServiceApp.Data;
 using VirtualSchoolServiceApp.Models;
+using VirtualSchoolServiceApp.utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +21,21 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddQuartz(q =>
+{
+	q.UseMicrosoftDependencyInjectionScopedJobFactory();
+	var jobKey = new JobKey("TimedHostedService");
+	q.AddJob<TimedHostedService>(opts => opts.WithIdentity(jobKey));
 
+	q.AddTrigger(opts => opts
+		.ForJob(jobKey)
+		.WithIdentity("TimedHostedService-trigger")
+		.WithCronSchedule("0 12 * * * ?"));
+
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

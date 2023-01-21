@@ -16,7 +16,7 @@ namespace VirtualSchoolServiceApp.Models
         [ForeignKey("ClassId")]
         public Class? Class { get; set; }
         public List<Grade>? Grades { get; set; } = new List<Grade>();
-
+        public Parent? Parent { get; set; }
     }
     public class StudentVM
     {

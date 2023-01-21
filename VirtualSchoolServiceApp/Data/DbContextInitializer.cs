@@ -34,6 +34,40 @@ namespace VirtualSchoolServiceApp.Data
                 "Student"
             );
 
+            // Student
+            await CreateAccount(
+                userManager,
+                new ApplicationUser
+                {
+                    UserName = "Teacher",
+                    Email = "Teacher@mail.com",
+                    FirstName = "Teacher",
+                    LastName = "Teacher",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    IsTeacher = true
+                },
+                password,
+                "Teacher"
+            );
+
+            // Parent
+            await CreateAccount(
+                userManager,
+                new ApplicationUser
+                {
+                    UserName = "Parent",
+                    Email = "Parent@mail.com",
+                    FirstName = "Parent",
+                    LastName = "Parent",
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    IsParent = true
+                },
+                password,
+                "Parent"
+            );
+
             // Administrator
             await CreateAccount(
                 userManager,

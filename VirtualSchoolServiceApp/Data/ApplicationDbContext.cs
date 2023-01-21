@@ -18,8 +18,13 @@ namespace VirtualSchoolServiceApp.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ClassSubjects> ClassSubjects { get; set; }
         public DbSet<Grade> Grades { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageThread> MessageThreads { get; set; }
+        public DbSet<Annoucement> Annoucements { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+ 
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(a => a.Student)
                 .WithOne(s => s.User)
@@ -42,16 +47,6 @@ namespace VirtualSchoolServiceApp.Data
 
             modelBuilder.Entity<ClassSubjects>()
                 .HasKey(t => new { t.SubjectId, t.ClassId });
-
-            modelBuilder.Entity<ClassSubjects>()
-                .HasOne(cs => cs.Subject)
-                .WithMany(s => s.ClassSubjects)
-                .HasForeignKey(cs => cs.SubjectId);
-
-            modelBuilder.Entity<ClassSubjects>()
-                .HasOne(cs => cs.Class)
-                .WithMany(c => c.ClassSubjects)
-                .HasForeignKey(cs => cs.ClassId);
 
             base.OnModelCreating(modelBuilder);
         }

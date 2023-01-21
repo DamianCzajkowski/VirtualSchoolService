@@ -96,35 +96,34 @@ namespace VirtualSchoolServiceApp.Controllers
                 Class = _db.Classes.Find(id),
                 StudentList = new MultiSelectList(_db.Set<Student>().Include(x => x.User).Where(s => s.ClassId != id), "Id", "User.FirstName")
             };
-
-            return View(addStudentClassVM);
+			ViewData["StudentId"] = id;
+			return View(addStudentClassVM);
         }
 
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddStudent(AddStudentClassVM obj)
+        public IActionResult AddStudent(int? id, AddStudentClassVM obj)
         {
-            if (obj.Students == null)
+            if (obj.Students != null)
             {
-                return RedirectToAction("Index");
-            }
-            var real_class = _db.Classes.Find(obj.Class.Id);
-            foreach (var studentId in obj.Students)
-            {
-                var student_obj = _db.Students.Find(studentId);
-                if (student_obj == null)
-                {
-                    return NotFound();
-                }
+				var real_class = _db.Classes.Find(obj.Class.Id);
+				foreach (var studentId in obj.Students)
+				{
+					var student_obj = _db.Students.Find(studentId);
+					if (student_obj == null)
+					{
+						return NotFound();
+					}
 
-                real_class.Students.Add(student_obj);
-            }
-            _db.Update(real_class);
-            _db.SaveChanges();
+					real_class.Students.Add(student_obj);
+				}
+				_db.Update(real_class);
+				_db.SaveChanges();
+			}
 
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Edit", new RouteValueDictionary(new { controller = "Classes", action = "Edit", id }));
+		}
 
         // GET
         public IActionResult AddSubject(int? id)
@@ -139,40 +138,39 @@ namespace VirtualSchoolServiceApp.Controllers
                 Class = _db.Classes.Find(id),
                 SubjectList = new MultiSelectList(Subjects, "Id", "Name")
             };
-
-            return View(addSubjectClassVM);
+			ViewData["SubjectId"] = id;
+			return View(addSubjectClassVM);
         }
 
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddSubject(AddSubjectClassVM obj)
+        public IActionResult AddSubject(int? id, AddSubjectClassVM obj)
         {
-            if (obj.Subjects == null)
+            if (obj.Subjects != null)
             {
-                return RedirectToAction("Index");
-            }
-            var real_class = _db.Classes.Find(obj.Class.Id);
-            foreach (var subjectId in obj.Subjects)
-            {
-                var subject_obj = _db.Subjects.Find(subjectId);
-                if (subject_obj == null)
+                var real_class = _db.Classes.Find(obj.Class.Id);
+                foreach (var subjectId in obj.Subjects)
                 {
-                    return NotFound();
+                    var subject_obj = _db.Subjects.Find(subjectId);
+                    if (subject_obj == null)
+                    {
+                        return NotFound();
+                    }
+                    ClassSubjects classSubjects = new()
+                    {
+                        Subject = subject_obj,
+                        SubjectId = subjectId,
+                        Class = real_class,
+                        ClassId = real_class.Id
+                    };
+                    _db.ClassSubjects.Add(classSubjects);
                 }
-                ClassSubjects classSubjects = new()
-                {
-                    Subject = subject_obj,
-                    SubjectId = subjectId,
-                    Class = real_class,
-                    ClassId = real_class.Id
-                };
-                _db.ClassSubjects.Add(classSubjects);
+                _db.SaveChanges();
             }
-            _db.SaveChanges();
 
-            return RedirectToAction("Index");
-        }
+			return RedirectToAction("Edit", new RouteValueDictionary(new { controller = "Classes", action = "Edit", id }));
+		}
 
 
 

@@ -1,0 +1,19 @@
+﻿@model Annoucement
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>Details</h1>
+
+<div class="border p-3 mt-4">
+		<div class="row pb-2">
+		<h2 class="text-primary">Annoucement @Model.Title</h2>
+			<hr />
+		</div>
+        <div class="mb-3 col-12">
+            <label asp-for="Content"></label>
+			<textarea asp-for="Content" disabled rows="3" class="form-control"></textarea>
+        </div>
+		<a asp-controller="Annoucement" asp-action="Index" class="btn btn-secondary" style="width:150px">
+			Back to List
+		</a>
+</div>

@@ -1,0 +1,41 @@
+﻿@model Grade
+
+<form method="post" asp-action="Edit">
+    <input asp-asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Grade</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3 col-2">
+            <label asp-for="Mark"></label>
+            <input asp-for="Mark" class="form-control" />
+            <span asp-validation-for="Mark" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Student"></label>
+            <select asp-for="StudentId" asp-items="ViewBag.Students" class="form-select">
+                <option disabled selected>--Select Student--</option>
+            </select>
+            <span asp-validation-for="StudentId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="Subject"></label>
+            <select asp-for="SubjectId" asp-items="ViewBag.Subjects" class="form-select">
+                <option disabled selected>--Select Subject--</option>
+            </select>
+            <span asp-validation-for="SubjectId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Edit</button>
+        <a asp-controller="Grade" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

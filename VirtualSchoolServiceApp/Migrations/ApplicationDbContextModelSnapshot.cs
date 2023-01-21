@@ -230,6 +230,35 @@ namespace VirtualSchoolServiceApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.Annoucement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Annoucements");
+                });
+
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Class", b =>
                 {
                     b.Property<int>("Id")
@@ -296,6 +325,71 @@ namespace VirtualSchoolServiceApp.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("Grades");
+                });
+
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.MessageThread", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Context")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MessageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("MessageId");
+
+                    b.ToTable("MessageThreads");
                 });
 
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Parent", b =>
@@ -467,6 +561,15 @@ namespace VirtualSchoolServiceApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.Annoucement", b =>
+                {
+                    b.HasOne("VirtualSchoolServiceApp.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Class", b =>
                 {
                     b.HasOne("VirtualSchoolServiceApp.Models.Teacher", "Supervisor")
@@ -514,6 +617,40 @@ namespace VirtualSchoolServiceApp.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.Message", b =>
+                {
+                    b.HasOne("VirtualSchoolServiceApp.Models.Parent", "Parent")
+                        .WithMany("Messages")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("VirtualSchoolServiceApp.Models.Teacher", "Teacher")
+                        .WithMany("Messages")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.MessageThread", b =>
+                {
+                    b.HasOne("VirtualSchoolServiceApp.Models.ApplicationUser", "Author")
+                        .WithMany("MessageThreads")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VirtualSchoolServiceApp.Models.Message", "Message")
+                        .WithMany("MessageThreads")
+                        .HasForeignKey("MessageId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Message");
+                });
+
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Parent", b =>
                 {
                     b.HasOne("VirtualSchoolServiceApp.Models.ApplicationUser", "User")
@@ -537,11 +674,13 @@ namespace VirtualSchoolServiceApp.Migrations
                         .WithMany("Students")
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("VirtualSchoolServiceApp.Models.Parent", null)
+                    b.HasOne("VirtualSchoolServiceApp.Models.Parent", "Parent")
                         .WithMany("Kids")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Class");
+
+                    b.Navigation("Parent");
 
                     b.Navigation("User");
                 });
@@ -573,9 +712,16 @@ namespace VirtualSchoolServiceApp.Migrations
                     b.Navigation("Students");
                 });
 
+            modelBuilder.Entity("VirtualSchoolServiceApp.Models.Message", b =>
+                {
+                    b.Navigation("MessageThreads");
+                });
+
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Parent", b =>
                 {
                     b.Navigation("Kids");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.Student", b =>
@@ -594,11 +740,15 @@ namespace VirtualSchoolServiceApp.Migrations
                 {
                     b.Navigation("Class");
 
+                    b.Navigation("Messages");
+
                     b.Navigation("Subjects");
                 });
 
             modelBuilder.Entity("VirtualSchoolServiceApp.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("MessageThreads");
+
                     b.Navigation("Parent");
 
                     b.Navigation("Student");

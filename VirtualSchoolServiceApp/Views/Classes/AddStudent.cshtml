@@ -15,8 +15,8 @@
             </div>
 				</div>
         <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
-        <a asp-controller="Classes" asp-action="Index" class="btn btn-secondary" style="width:150px">
-            Back to List
+        <a asp-controller="Classes" asp-action="Edit" asp-route-id="@ViewData["StudentId"]"  class="btn btn-secondary" style="width:150px">
+            Back to Edit
         </a>
     </div>
 </form>

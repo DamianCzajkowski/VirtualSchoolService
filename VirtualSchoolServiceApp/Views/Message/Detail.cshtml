@@ -1,0 +1,36 @@
+﻿@model Message
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>Details</h1>
+
+<div class="border p-3 mt-4">
+	<div class="row">
+		<div class="row pb-2">
+		<h2 class="text-primary">Message @Model.Title</h2>
+		<p>@Model.Timestamp</p>
+			<hr />
+		</div>
+		<div class="mb-3 col-6">
+			<p>From: @Model.Parent.User</>
+		</div>
+		<div class="mb-3 col-6">
+			<p>To: @Model.Teacher.User</p>
+		</div>
+		<div class="mb-3">
+			<label asp-for="Context"></label>
+			<textarea asp-for="Context" disabled rows="3" class="form-control"></textarea>
+		</div>
+
+		@foreach (var obj in Model.MessageThreads)
+		{
+			<p>@obj.Author: @obj.Context</p>
+		}
+		<a asp-controller="Message" asp-action="SendResponse" asp-route-id="@Model.Id" class="btn btn-primary mb-3" style="width:150px">
+			Send a response
+		</a>
+		<a asp-controller="Message" asp-action="Index" class="btn btn-secondary mb-3" style="width:150px">
+			Back to List
+		</a>
+	</div>
+</div>
